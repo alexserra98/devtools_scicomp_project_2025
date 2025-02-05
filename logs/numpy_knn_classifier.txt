@@ -1,0 +1,135 @@
+Timer unit: 1e-06 s
+
+Total time: 0 s
+File: /Users/dariocoscia/Desktop/devtools_scicomp_project_2025/src/pyclassify/utils.py
+Function: distance at line 8
+
+Line #      Hits         Time  Per Hit   % Time  Line Contents
+==============================================================
+     8                                           @profile
+     9                                           def distance(point1: list[float], point2: list[float]) -> float:
+    10                                               """
+    11                                               Calculates and returns the square of the Euclidean distance between two points.
+    12                                               
+    13                                               Args:
+    14                                               - point1 (list[float]): The first point in the form of a list of coordinates.
+    15                                               - point2 (list[float]): The second point in the form of a list of coordinates.
+    16                                               
+    17                                               Returns:
+    18                                               - float: The square of the Euclidean distance between the two points.
+    19                                               """
+    20                                               return sum((a - b) ** 2 for a, b in zip(point1, point2))
+
+Total time: 0.000876 s
+File: /Users/dariocoscia/Desktop/devtools_scicomp_project_2025/src/pyclassify/utils.py
+Function: majority_vote at line 36
+
+Line #      Hits         Time  Per Hit   % Time  Line Contents
+==============================================================
+    36                                           @profile
+    37                                           def majority_vote(neighbors: list[int]) -> int:
+    38                                               """
+    39                                               Calculates and returns the class label with the most votes among the neighbors.
+    40                                               
+    41                                               Args:
+    42                                               - neighbors (list[int]): A list of class labels representing the neighboring points.
+    43                                               
+    44                                               Returns:
+    45                                               - int: The class label (of any hashable type) with the highest count in the list of neighbors.
+    46                                               """
+    47       281         35.0      0.1      4.0      vote_count = {}
+    48      1686        253.0      0.2     28.9      for neighbor in neighbors:
+    49      1405        189.0      0.1     21.6          if neighbor in vote_count:
+    50       987        192.0      0.2     21.9              vote_count[neighbor] += 1
+    51                                                   else:
+    52       418         72.0      0.2      8.2              vote_count[neighbor] = 1
+    53       281         96.0      0.3     11.0      majority_class = max(vote_count, key=vote_count.get)
+    54       281         39.0      0.1      4.5      return majority_class
+
+Total time: 0.049648 s
+File: /Users/dariocoscia/Desktop/devtools_scicomp_project_2025/src/pyclassify/utils.py
+Function: distance_numpy at line 22
+
+Line #      Hits         Time  Per Hit   % Time  Line Contents
+==============================================================
+    22                                           @profile
+    23                                           def distance_numpy(point1: numpy.ndarray, point2: numpy.ndarray) -> float:
+    24                                               """
+    25                                               Calculates and returns the square of the Euclidean distance between two points.
+    26                                           
+    27                                               Args:
+    28                                               - point1 (np.ndarray): The first point as a numpy array of coordinates.
+    29                                               - point2 (np.ndarray): The second point as a numpy array of coordinates.
+    30                                           
+    31                                               Returns:
+    32                                               - float: The square of the Euclidean distance between the two points.
+    33                                               """
+    34     19670      49648.0      2.5    100.0      return numpy.sum((point1 - point2) ** 2)
+
+Total time: 0.073811 s
+File: /Users/dariocoscia/Desktop/devtools_scicomp_project_2025/src/pyclassify/classifier.py
+Function: _get_k_nearest_neighbors at line 37
+
+Line #      Hits         Time  Per Hit   % Time  Line Contents
+==============================================================
+    37                                               @profile
+    38                                               def _get_k_nearest_neighbors(
+    39                                                       self,
+    40                                                       X: list[list[float]],
+    41                                                       y: list[int],
+    42                                                       x: list[float]) -> list[int]:
+    43                                                   """
+    44                                                   Finds and returns the labels of the k-nearest neighbors of a given point.
+    45                                                   
+    46                                                   Args:
+    47                                                   - X (list[list[float]]): A list of training data points, where each point is represented
+    48                                                                             as a list of coordinates (features).
+    49                                                   - y (list[int]): A list of class labels corresponding to the training data points.
+    50                                                   - x (list[float]): A new data point (as a list of coordinates) for which the k-nearest 
+    51                                                                       neighbors are to be found.
+    52                                                   
+    53                                                   Returns:
+    54                                                   - list[int]: A list of class labels corresponding to the k-nearest neighbors.
+    55                                                   """
+    56       281      70785.0    251.9     95.9          distances = [(xi, yi, self.distance(xi, x)) for xi, yi in zip(X, y)]
+    57       281       2864.0     10.2      3.9          sorted_neighbors = sorted(distances, key=lambda item: item[2])[:self.k]
+    58       281        162.0      0.6      0.2          return [yi for _, yi, _ in sorted_neighbors]
+
+Total time: 0.077639 s
+File: /Users/dariocoscia/Desktop/devtools_scicomp_project_2025/src/pyclassify/classifier.py
+Function: __call__ at line 60
+
+Line #      Hits         Time  Per Hit   % Time  Line Contents
+==============================================================
+    60                                               @profile
+    61                                               def __call__(self,
+    62                                                            data: tuple[list[list[float]], list[int]],
+    63                                                            new_points: list[list[float]]) -> list[int]:
+    64                                                   """
+    65                                                   Classifies new data points using the kNN algorithm.
+    66                                                   
+    67                                                   Args:
+    68                                                   - data (tuple[list[list[float]], list[int]]): A tuple containing:
+    69                                                       - X (list[list[float]]): A list of training data points (each a list of coordinates).
+    70                                                       - y (list[int]): A list of class labels corresponding to the training data.
+    71                                                   - new_points (list[list[float]]): A list of new data points to classify, each represented 
+    72                                                                                     as a list of coordinates.
+    73                                                   
+    74                                                   Returns:
+    75                                                   - list[int]: A list of predicted class labels for the new points.
+    76                                                   """
+    77         1          0.0      0.0      0.0          X, y = data
+    78         1          0.0      0.0      0.0          predictions = []
+    79         1          1.0      1.0      0.0          if self.backhand == 'numpy':
+    80         1        302.0    302.0      0.4              X, y, new_points = np.array(X), np.array(y), np.array(new_points)
+    81       282         53.0      0.2      0.1          for point in new_points:
+    82       281      75199.0    267.6     96.9              neighbors = self._get_k_nearest_neighbors(X, y, point)
+    83       281       2038.0      7.3      2.6              predicted_class = majority_vote(neighbors)
+    84       281         46.0      0.2      0.1              predictions.append(predicted_class)
+    85         1          0.0      0.0      0.0          return predictions
+
+  0.00 seconds - /Users/dariocoscia/Desktop/devtools_scicomp_project_2025/src/pyclassify/utils.py:8 - distance
+  0.00 seconds - /Users/dariocoscia/Desktop/devtools_scicomp_project_2025/src/pyclassify/utils.py:36 - majority_vote
+  0.05 seconds - /Users/dariocoscia/Desktop/devtools_scicomp_project_2025/src/pyclassify/utils.py:22 - distance_numpy
+  0.07 seconds - /Users/dariocoscia/Desktop/devtools_scicomp_project_2025/src/pyclassify/classifier.py:37 - _get_k_nearest_neighbors
+  0.08 seconds - /Users/dariocoscia/Desktop/devtools_scicomp_project_2025/src/pyclassify/classifier.py:60 - __call__

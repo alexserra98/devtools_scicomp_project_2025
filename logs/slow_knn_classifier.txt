@@ -1,0 +1,112 @@
+Timer unit: 1e-06 s
+
+Total time: 0.000944 s
+File: /Users/dariocoscia/anaconda3/envs/devtools_scicomp/lib/python3.9/site-packages/pyclassify/utils.py
+Function: majority_vote at line 21
+
+Line #      Hits         Time  Per Hit   % Time  Line Contents
+==============================================================
+    21                                           @profile
+    22                                           def majority_vote(neighbors: list[int]) -> int:
+    23                                               """
+    24                                               Calculates and returns the class label with the most votes among the neighbors.
+    25                                               
+    26                                               Args:
+    27                                               - neighbors (list[int]): A list of class labels representing the neighboring points.
+    28                                               
+    29                                               Returns:
+    30                                               - int: The class label (of any hashable type) with the highest count in the list of neighbors.
+    31                                               """
+    32       281         41.0      0.1      4.3      vote_count = {}
+    33      1686        297.0      0.2     31.5      for neighbor in neighbors:
+    34      1405        203.0      0.1     21.5          if neighbor in vote_count:
+    35       987        181.0      0.2     19.2              vote_count[neighbor] += 1
+    36                                                   else:
+    37       418         57.0      0.1      6.0              vote_count[neighbor] = 1
+    38       281        118.0      0.4     12.5      majority_class = max(vote_count, key=vote_count.get)
+    39       281         47.0      0.2      5.0      return majority_class
+
+Total time: 0.124555 s
+File: /Users/dariocoscia/anaconda3/envs/devtools_scicomp/lib/python3.9/site-packages/pyclassify/utils.py
+Function: distance at line 7
+
+Line #      Hits         Time  Per Hit   % Time  Line Contents
+==============================================================
+     7                                           @profile
+     8                                           def distance(point1: list[float], point2: list[float]) -> float:
+     9                                               """
+    10                                               Calculates and returns the square of the Euclidean distance between two points.
+    11                                               
+    12                                               Args:
+    13                                               - point1 (list[float]): The first point in the form of a list of coordinates.
+    14                                               - point2 (list[float]): The second point in the form of a list of coordinates.
+    15                                               
+    16                                               Returns:
+    17                                               - float: The square of the Euclidean distance between the two points.
+    18                                               """
+    19     19670     124555.0      6.3    100.0      return sum((a - b) ** 2 for a, b in zip(point1, point2))
+
+Total time: 0.151116 s
+File: /Users/dariocoscia/anaconda3/envs/devtools_scicomp/lib/python3.9/site-packages/pyclassify/classifier.py
+Function: _get_k_nearest_neighbors at line 28
+
+Line #      Hits         Time  Per Hit   % Time  Line Contents
+==============================================================
+    28                                               @profile
+    29                                               def _get_k_nearest_neighbors(
+    30                                                       self,
+    31                                                       X: list[list[float]],
+    32                                                       y: list[int],
+    33                                                       x: list[float]) -> list[int]:
+    34                                                   """
+    35                                                   Finds and returns the labels of the k-nearest neighbors of a given point.
+    36                                                   
+    37                                                   Args:
+    38                                                   - X (list[list[float]]): A list of training data points, where each point is represented
+    39                                                                             as a list of coordinates (features).
+    40                                                   - y (list[int]): A list of class labels corresponding to the training data points.
+    41                                                   - x (list[float]): A new data point (as a list of coordinates) for which the k-nearest 
+    42                                                                       neighbors are to be found.
+    43                                                   
+    44                                                   Returns:
+    45                                                   - list[int]: A list of class labels corresponding to the k-nearest neighbors.
+    46                                                   """
+    47       281     147987.0    526.6     97.9          distances = [(xi, yi, distance(xi, x)) for xi, yi in zip(X, y)]
+    48       281       2923.0     10.4      1.9          sorted_neighbors = sorted(distances, key=lambda item: item[2])[:self.k]
+    49       281        206.0      0.7      0.1          return [yi for _, yi, _ in sorted_neighbors]
+
+Total time: 0.154149 s
+File: /Users/dariocoscia/anaconda3/envs/devtools_scicomp/lib/python3.9/site-packages/pyclassify/classifier.py
+Function: __call__ at line 51
+
+Line #      Hits         Time  Per Hit   % Time  Line Contents
+==============================================================
+    51                                               @profile
+    52                                               def __call__(self,
+    53                                                            data: tuple[list[list[float]], list[int]],
+    54                                                            new_points: list[list[float]]) -> list[int]:
+    55                                                   """
+    56                                                   Classifies new data points using the kNN algorithm.
+    57                                                   
+    58                                                   Args:
+    59                                                   - data (tuple[list[list[float]], list[int]]): A tuple containing:
+    60                                                       - X (list[list[float]]): A list of training data points (each a list of coordinates).
+    61                                                       - y (list[int]): A list of class labels corresponding to the training data.
+    62                                                   - new_points (list[list[float]]): A list of new data points to classify, each represented 
+    63                                                                                     as a list of coordinates.
+    64                                                   
+    65                                                   Returns:
+    66                                                   - list[int]: A list of predicted class labels for the new points.
+    67                                                   """
+    68         1          1.0      1.0      0.0          X, y = data
+    69         1          0.0      0.0      0.0          predictions = []
+    70       282         44.0      0.2      0.0          for point in new_points:
+    71       281     151790.0    540.2     98.5              neighbors = self._get_k_nearest_neighbors(X, y, point)
+    72       281       2244.0      8.0      1.5              predicted_class = majority_vote(neighbors)
+    73       281         70.0      0.2      0.0              predictions.append(predicted_class)
+    74         1          0.0      0.0      0.0          return predictions
+
+  0.00 seconds - /Users/dariocoscia/anaconda3/envs/devtools_scicomp/lib/python3.9/site-packages/pyclassify/utils.py:21 - majority_vote
+  0.12 seconds - /Users/dariocoscia/anaconda3/envs/devtools_scicomp/lib/python3.9/site-packages/pyclassify/utils.py:7 - distance
+  0.15 seconds - /Users/dariocoscia/anaconda3/envs/devtools_scicomp/lib/python3.9/site-packages/pyclassify/classifier.py:28 - _get_k_nearest_neighbors
+  0.15 seconds - /Users/dariocoscia/anaconda3/envs/devtools_scicomp/lib/python3.9/site-packages/pyclassify/classifier.py:51 - __call__
