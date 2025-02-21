@@ -1,0 +1,8 @@
+data/
+.vscode/
+__pycache__/
+*.pyc
+devtools_scicomp/
+.pytest_cache/
+logs/
+lightning_logs/
