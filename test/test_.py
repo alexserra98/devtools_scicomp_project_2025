@@ -58,12 +58,12 @@ def test_kNN_constructor_valid_types():
     knn_1 = kNN(3)  # integer k
     assert isinstance(knn_1, kNN)  # Ensure the object is an instance of kNN
     assert knn_1.k == 3  # Ensure that the 'k' attribute is correctly set to 3
-    assert knn_3.backhand == 'plain'  # Ensure that the 'backhand' attribute is correctly set to plain
+    assert knn_1.backhand == 'plain'  # Ensure that the 'backhand' attribute is correctly set to plain
 
     knn_2 = kNN(5)  # integer k
     assert isinstance(knn_2, kNN)  # Ensure the object is an instance of kNN
     assert knn_2.k == 5  # Ensure that the 'k' attribute is correctly set to 5
-    assert knn_3.backhand == 'plain'  # Ensure that the 'backhand' attribute is correctly set to plain
+    assert knn_2.backhand == 'plain'  # Ensure that the 'backhand' attribute is correctly set to plain
 
     knn_3 = kNN(5, 'numpy')  # integer k
     assert isinstance(knn_3, kNN)  # Ensure the object is an instance of kNN
