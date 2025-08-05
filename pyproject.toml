@@ -1,24 +1,55 @@
-# Choosing a build backend:
-requires = ["setuptools"]
+[build-system]
+requires = ["setuptools>=45", "wheel"]
 build-backend = "setuptools.build_meta"
 
-
 [project]
-name = "pyclassify"
+name = "devtools_scicomp_project_2025"
 version = "0.0.1"
 description = "INSERT"
 readme = "README.md"
 requires-python = ">=3.9"
 license = { file = "LICENSE" }
-authors = [{ name = "INSERT", email = "INSERT@gmail.com" }]
-dynamic = ["dependencies"]
+authors = [{ name = "Alessandro Serra", email = "aserra@sissa.it" }]
+dependencies = [
+    # Core ML frameworks
+    "torch>=2.0.0",
+    "pytorch-lightning>=2.0.0",
+    "numpy>=1.21.0",
+    
+    # Data manipulation and visualization
+    "matplotlib>=3.5.0",
+    "seaborn>=0.11.0",
+    "pandas>=1.3.0",
+    
+    # Progress bars and utilities
+    "tqdm>=4.64.0",
+    "psutil>=5.8.0",
+    
+    # Tokenizers and text processing
+    "transformers>=4.21.0",
+    "datasets>=2.0.0",
+    
+    # Development and testing
+    "pytest>=8.3.4",
+    "black>=22.0.0",
+    "flake8>=4.0.0",
+    "mypy>=0.910",
+    
+    # Build and packaging
+    "exceptiongroup==1.2.2",
+    "iniconfig==2.0.0",
+    "packaging==24.2",
+    "pluggy==1.5.0",
+    "tomli==2.2.1",
+    
+    # Jupyter for notebooks (optional)
+    "jupyter>=1.0.0",
+    "ipywidgets>=7.6.0",
+]
 
 [tool.setuptools.packages.find]
-where = ["src"]
-exclude = ["scripts", "tests", "shell", "experiments"]
-
-[tool.setuptools.dynamic]
-dependencies = { file = ["requirements.txt"] }
+where = ["."]
+include = ["src*"]
 
 [project.optional-dependencies]
 test = ["pytest"]

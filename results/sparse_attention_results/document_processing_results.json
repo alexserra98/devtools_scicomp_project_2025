@@ -1,0 +1,94 @@
+{
+  "metadata": {
+    "device": "cuda",
+    "d_model": 512,
+    "num_heads": 8,
+    "batch_size": 1
+  },
+  "scenarios": {
+    "Short Article": {
+      "description": "Blog post or news article",
+      "seq_len": 1024,
+      "results": {
+        "standard": {
+          "memory": 70.1259765625,
+          "time": 0.4706382751464844,
+          "success": true
+        },
+        "sparse": {
+          "memory": 73.126953125,
+          "time": 0.5194187164306641,
+          "success": true
+        },
+        "flash": {
+          "memory": 22.1279296875,
+          "time": 0.3994941711425781,
+          "success": true
+        }
+      }
+    },
+    "Research Paper": {
+      "description": "Academic paper with references",
+      "seq_len": 4096,
+      "results": {
+        "standard": {
+          "memory": 927.1279296875,
+          "time": 3.0136585235595703,
+          "success": true
+        },
+        "sparse": {
+          "memory": 55.1279296875,
+          "time": 650.139570236206,
+          "success": true
+        },
+        "flash": {
+          "memory": 55.1279296875,
+          "time": 0.5021572113037109,
+          "success": true
+        }
+      }
+    },
+    "Technical Report": {
+      "description": "Long technical documentation",
+      "seq_len": 8192,
+      "results": {
+        "standard": {
+          "memory": 3646.1279296875,
+          "time": 8.824729919433594,
+          "success": true
+        },
+        "sparse": {
+          "memory": 127.1279296875,
+          "time": 1296.6766357421875,
+          "success": true
+        },
+        "flash": {
+          "memory": 127.1279296875,
+          "time": 1.4434337615966797,
+          "success": true
+        }
+      }
+    },
+    "Book Chapter": {
+      "description": "Full book chapter or legal document",
+      "seq_len": 16384,
+      "results": {
+        "standard": {
+          "memory": 14478.1279296875,
+          "time": 31.065988540649414,
+          "success": true
+        },
+        "sparse": {
+          "memory": 367.1279296875,
+          "time": 2594.171953201294,
+          "success": true
+        },
+        "flash": {
+          "memory": 367.1279296875,
+          "time": 5.034303665161133,
+          "success": true
+        }
+      }
+    }
+  }
+}

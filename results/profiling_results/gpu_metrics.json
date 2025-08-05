@@ -1,0 +1,11 @@
+{
+  "standard": {
+    "error": "'FunctionEventAvg' object has no attribute 'cuda_time_total'"
+  },
+  "sparse_local": {
+    "error": "Unknown attention type: sparse_local"
+  },
+  "flash": {
+    "error": "'FunctionEventAvg' object has no attribute 'cuda_time_total'"
+  }
+}
